@@ -29,7 +29,7 @@ To run the tests, run `npm test`. If no errors are displayed, then the tests hav
 1. Before deployment you will need to have an AWS IAM user with programmatic access. You can create one [here](https://console.aws.amazon.com/iam/home?region=us-east-1#/users$new?step=details).
 2. The user has to have Full Access to AWS Lambda and API Gateway.
 3. You will need to have the AWS CLI installed on your machine. You can download it from [here](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html). (Optional)
-4. The copy the `.aws/sample-aws-credentials` file to `.aws/credentials` using `cp .aws/sample-aws-credentials .aws/credentials`.
-5. Open the `.aws/credentials` file and replace the `aws_access_key_id` and `aws_secret_access_key` with the access key ID and secret access key of the IAM user you created in step 1.
+4. The copy the `.aws/sample-aws-credentials` to the home directory using `cp .aws/sample-aws-credentials ~/.aws/credentials`
+5. Open the `~/.aws/credentials` file and replace the `aws_access_key_id` and `aws_secret_access_key` with the access key ID and secret access key of the IAM user you created in step 1.
 
 To deploy the server to AWS Lambda, run `npm run deploy`. This will create a new Lambda function and API Gateway endpoint. You can then use the URL of the API Gateway endpoint to access the website you are proxying. Then copy the URL and paste it into your browser.
