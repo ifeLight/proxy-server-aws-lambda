@@ -138,3 +138,6 @@ config.json
 
 # AWS lambda file
 lambda.js
+
+# AWS credentials
+.aws/credentials
