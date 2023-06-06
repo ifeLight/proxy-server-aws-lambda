@@ -131,3 +131,10 @@ dist
 
 # Buiild files
 build
+
+# Config file
+src/config.json
+config.json
+
+# AWS lambda file
+lambda.js

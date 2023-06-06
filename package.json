@@ -5,8 +5,9 @@
   "main": "build/index.js",
   "scripts": {
     "build": "npx tsc",
-    "start": "npx tsc && node build/index.js",
-    "deploy": "gcloud beta functions deploy proxyServer --runtime nodejs16 --trigger-http --allow-unauthenticated --env-vars-file .env.yaml",
+    "start": "npm run build && node build/index.js",
+    "serverless": "npm run build && npx claudia generate-serverless-express-proxy --express-module build/app",
+    "deploy": "npm run serverless && npx claudia create --handler lambda.handler --deploy-proxy-api --region eu-central-1",
     "test": "cross-env NODE_ENV=test npx mocha --require ts-node/register src/**/*.test.ts",
     "saving-variable": "TS_NODE_FILES=true"
   },
@@ -27,6 +28,7 @@
   },
   "homepage": "https://github.com/ifeLight/proxy-server-aws-lambda#readme",
   "dependencies": {
+    "aws-serverless-express": "^3.4.0",
     "dotenv": "^16.1.4",
     "dotenv-yaml": "^0.1.4",
     "express": "^4.18.2",
