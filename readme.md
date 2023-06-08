@@ -125,3 +125,7 @@ If successful, you will get a response similar to this:
 ```
 
 After all, you can now access the website using the function url. (e.g. `https://ckycrb5ojxgjfepz7mg3cmfki40nlqbk.lambda-url.us-east-1.on.aws/`)
+
+For a faster way to deploy, you can use visit the [Deploy readme](deploy.md).
+
+```bash

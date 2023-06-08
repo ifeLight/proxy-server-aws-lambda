@@ -15,5 +15,5 @@ const binaryMimeTypes = [
 const server = awsServerlessExpress.createServer(app, undefined, binaryMimeTypes);
 
 export const handler = async (event: APIGatewayEvent, context: Context) => {
-    return awsServerlessExpress.proxy(server, event, context);
+    awsServerlessExpress.proxy(server, event, context);
 } 
