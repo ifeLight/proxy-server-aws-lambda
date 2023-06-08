@@ -4,12 +4,13 @@
   "description": "A proxy server that works on AWS lambda",
   "main": "build/index.js",
   "scripts": {
-    "build": "npx tsc",
-    "start": "npm run build && node build/index.js",
-    "serverless": "npm run build && npx claudia generate-serverless-express-proxy --express-module build/app",
-    "deploy": "npm run serverless && npx claudia create --handler lambda.handler --deploy-proxy-api --region eu-central-1",
-    "test": "cross-env NODE_ENV=test npx mocha --require ts-node/register src/**/*.test.ts",
-    "saving-variable": "TS_NODE_FILES=true"
+    "start": "npm tsc && node build/index.js",
+    "zip": "cd dist && bestzip index.zip index.js*",
+    "prebuild": "rm -rf dist",
+    "build": "esbuild src/index.ts --bundle --minify --sourcemap --platform=node --target=es2020 --outfile=dist/index.js",
+    "postbuild": "npm run zip",
+    "deploy": "aws lambda create-function --function-name proxy-server --runtime 'nodejs16.x' --role arn:aws:iam::123456789012:role/lambda-ex --zip-file 'fileb://dist/index.zip' --handler index.handler --region eu-central-1",
+    "test": "cross-env NODE_ENV=test npx mocha --require ts-node/register src/**/*.test.ts"
   },
   "repository": {
     "type": "git",
@@ -35,14 +36,18 @@
     "http-proxy-middleware": "^2.0.6"
   },
   "devDependencies": {
+    "@types/aws-lambda": "^8.10.116",
+    "@types/aws-serverless-express": "^3.3.5",
     "@types/chai": "^4.3.4",
     "@types/express": "^4.17.17",
     "@types/mocha": "^10.0.1",
     "@types/node": "^18.11.18",
     "@types/supertest": "^2.0.12",
+    "bestzip": "^2.2.1",
     "chai": "^4.3.7",
-    "claudia": "^5.14.1",
+    "copyfiles": "^2.4.1",
     "cross-env": "^7.0.3",
+    "esbuild": "^0.17.19",
     "mocha": "^10.2.0",
     "supertest": "^6.3.3",
     "ts-mocha": "^10.0.0",
