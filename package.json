@@ -6,11 +6,11 @@
   "scripts": {
     "start": "npm tsc && node build/index.js",
     "zip": "cd dist && bestzip index.zip index.js*",
-    "prebuild": "rm -rf dist",
+    "prebuild": "rimraf dist",
     "build": "esbuild src/index.ts --bundle --minify --sourcemap --platform=node --target=es2020 --outfile=dist/index.js",
     "postbuild": "npm run zip",
-    "deploy": "aws lambda create-function --function-name proxy-server --runtime 'nodejs16.x' --role arn:aws:iam::123456789012:role/lambda-ex --zip-file 'fileb://dist/index.zip' --handler index.handler --region eu-central-1",
-    "test": "cross-env NODE_ENV=test npx mocha --require ts-node/register src/**/*.test.ts"
+    "test": "cross-env NODE_ENV=test npx mocha --require ts-node/register src/**/*.test.ts",
+    "deploy": "FUNCTION_NAME=$npm_config_name && FUNCTION_ROLE=$npm_config_role && REGION=$npm_config_region && aws lambda create-function --function-name $FUNCTION_NAME --runtime 'nodejs16.x' --role $FUNCTION_ROLE --zip-file 'fileb://dist/index.zip' --handler index.handler --region $REGION  --output text && aws lambda create-function-url-config --function-name $FUNCTION_NAME --auth-type NONE --cors '{\"AllowOrigins\":[\"*\"], \"AllowHeaders\": [\"*\"], \"AllowMethods\": [\"*\"]}' --region $REGION && aws lambda add-permission --function-name $FUNCTION_NAME --action lambda:invokeFunctionUrl --principal \"*\" --output text --statement-id sample0-statement --region $REGION --function-url-auth-type NONE && echo \"The function has been deployed successfully: The function url: \" && aws lambda get-function-url-config --function-name $FUNCTION_NAME --region $REGION --query FunctionUrl --output text"
   },
   "repository": {
     "type": "git",
@@ -49,6 +49,7 @@
     "cross-env": "^7.0.3",
     "esbuild": "^0.17.19",
     "mocha": "^10.2.0",
+    "rimraf": "^5.0.1",
     "supertest": "^6.3.3",
     "ts-mocha": "^10.0.0",
     "ts-node": "^10.9.1",
