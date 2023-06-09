@@ -141,3 +141,6 @@ lambda.js
 
 # AWS credentials
 .aws/credentials
+
+# Sam build files
+.aws-sam
