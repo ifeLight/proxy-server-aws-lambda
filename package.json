@@ -7,7 +7,7 @@
     "start": "npm tsc && node build/index.js",
     "zip": "cd dist && bestzip index.zip index.js*",
     "prebuild": "rimraf dist",
-    "build": "esbuild src/index.ts --bundle --minify --sourcemap --platform=node --target=es2020 --outfile=dist/index.js",
+    "build": "esbuild src/lambda.ts --bundle --minify --sourcemap --platform=node --target=es2020 --outfile=dist/index.js",
     "postbuild": "npm run zip",
     "test": "cross-env NODE_ENV=test npx mocha --require ts-node/register src/**/*.test.ts",
     "deploy": "FUNCTION_NAME=$npm_config_name && FUNCTION_ROLE=$npm_config_role && REGION=$npm_config_region && aws lambda create-function --function-name $FUNCTION_NAME --runtime 'nodejs16.x' --role $FUNCTION_ROLE --zip-file 'fileb://dist/index.zip' --handler index.handler --region $REGION  --output text && aws lambda create-function-url-config --function-name $FUNCTION_NAME --auth-type NONE --cors '{\"AllowOrigins\":[\"*\"], \"AllowHeaders\": [\"*\"], \"AllowMethods\": [\"*\"]}' --region $REGION && aws lambda add-permission --function-name $FUNCTION_NAME --action lambda:invokeFunctionUrl --principal \"*\" --output text --statement-id sample0-statement --region $REGION --function-url-auth-type NONE && echo \"The function has been deployed successfully: The function url: \" && aws lambda get-function-url-config --function-name $FUNCTION_NAME --region $REGION --query FunctionUrl --output text"
@@ -29,7 +29,8 @@
   },
   "homepage": "https://github.com/ifeLight/proxy-server-aws-lambda#readme",
   "dependencies": {
-    "aws-serverless-express": "^3.4.0",
+    "@vendia/serverless-express": "^4.10.4",
+    "axios": "^1.4.0",
     "dotenv": "^16.1.4",
     "dotenv-yaml": "^0.1.4",
     "express": "^4.18.2",

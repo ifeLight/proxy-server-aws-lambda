@@ -1,0 +1,13 @@
+Resources:
+  HelloWorldFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: dist/
+      Handler: index.handler
+      Runtime: nodejs16.x
+      Events:
+        ProxyServer:
+          Type: Api
+          Properties:
+            Path: /
+            Method: get
