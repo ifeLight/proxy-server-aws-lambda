@@ -1,13 +1,17 @@
 Resources:
-  HelloWorldFunction:
+  ProxyServerApi:
+    Type: AWS::Serverless::HttpApi
+
+  ProxyServerFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: dist/
+      CodeUri: ./dist
+      Runtime: nodejs18.x
       Handler: index.handler
-      Runtime: nodejs16.x
+      MemorySize: 1024
+      Timeout: 30
       Events:
-        ProxyServer:
-          Type: Api
+        ProxyApiRoot:
+          Type: HttpApi
           Properties:
-            Path: /
-            Method: get
+            ApiId: !Ref ProxyServerApi
