@@ -54,3 +54,31 @@ aws lambda get-function-url-config --function-name $FUNCTION_NAME --region $REGI
 ```
 
 Copy the URL at then end of the output and paste it in your browser to see the website you are proxying.
+
+### Option 3
+
+You will have to install the [AWS SAM CLI](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-install.html) and [Docker](https://docs.docker.com/get-docker/) on your machine.
+
+This is the most straightforward option if all the prerequisites are met and the user has the required permissions. A root user or a user with the required permissions will have to run the following command:
+
+- Build the project
+
+```bash
+npm run build:sam
+```
+
+- To test by accessing the function locally, run the following command
+
+```bash
+npm run start:sam
+```
+
+- To deploy the project, run the following command
+
+```bash
+ npm run deploy:sam --name=<<the function>> --region=<<the region>>
+```
+
+1. Replace the `<<the region>>` with the region you want to deploy to. (e.g. `us-east-1`, `us-west-2`, `eu-central-1` etc.)
+2. Replace the `<<the function name>>` with the name you want to give the function. (e.g. `proxy-server`)
+3. Copy the URL at then end of the output and paste it in your browser to see the website you are proxying.

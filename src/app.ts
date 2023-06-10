@@ -18,28 +18,31 @@ const app = express();
 //@ts-ignore
 const target = config['target-proxy'] || 'https://www.google.com';
 
-// app.use( createProxyMiddleware({ 
-//     target, 
-//     changeOrigin: true,
-//     ws: true, // proxy websockets
-// }));
+app.use( createProxyMiddleware({ 
+    target, 
+    changeOrigin: true,
+    ws: false, // proxy websockets
+}));
 
 // Create a Manual Proxy Server to a target server
-app.use('/', (req, res) => {
-    const url = target + req.url;
-    console.log('Proxying to ' + url);
-    axios({
-        method: req.method as any,
-        url,
-        data: req.body,
-        headers: req.headers,
-        responseType: 'stream'
-    }).then((response) => {
-        response.data.pipe(res);
-    }).catch((err) => {
-        console.log(err);
-    });
-});
+// app.use('/', (req, res) => {
+//     const url = target + req.url;
+//     console.log('Proxying to ' + url);
+//     axios({
+//         method: req.method as any,
+//         url,
+//         data: req.body,
+//         headers: {
+//             ...req.headers,
+//             // host: new URL(target).host,
+//         },
+//         responseType: 'stream'
+//     }).then((response) => {
+//         response.data.pipe(res);
+//     }).catch((err) => {
+//         console.log(err);
+//     });
+// });
     
 
 export default app;

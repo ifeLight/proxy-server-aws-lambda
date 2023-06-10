@@ -5,12 +5,12 @@
   "main": "build/index.js",
   "scripts": {
     "start": "npm tsc && node build/index.js",
-    "start:sam": "sam local start-api",
+    "start:sam": "npm run build:sam && sam local start-api",
     "zip": "cd dist && bestzip index.zip index.js*",
     "prebuild": "rimraf dist",
     "build": "esbuild src/lambda.ts --bundle --minify --sourcemap --platform=node --target=es2020 --outfile=dist/index.js",
     "postbuild": "npm run zip",
-    "build:sam": "sam build",
+    "build:sam": "npm run build && sam build",
     "test": "cross-env NODE_ENV=test npx mocha --require ts-node/register src/**/*.test.ts",
     "deploy": "FUNCTION_NAME=$npm_config_name && FUNCTION_ROLE=$npm_config_role && REGION=$npm_config_region && aws lambda create-function --function-name $FUNCTION_NAME --runtime 'nodejs18.x' --role $FUNCTION_ROLE --zip-file 'fileb://dist/index.zip' --handler index.handler --region $REGION  --output text && aws lambda create-function-url-config --function-name $FUNCTION_NAME --auth-type NONE --cors '{\"AllowOrigins\":[\"*\"], \"AllowHeaders\": [\"*\"], \"AllowMethods\": [\"*\"]}' --region $REGION && aws lambda add-permission --function-name $FUNCTION_NAME --action lambda:invokeFunctionUrl --principal \"*\" --output text --statement-id sample0-statement --region $REGION --function-url-auth-type NONE && echo \"The function has been deployed successfully: The function url: \" && aws lambda get-function-url-config --function-name $FUNCTION_NAME --region $REGION --query FunctionUrl --output text",
     "deploy:sam": "sam deploy --stack-name $npm_config_name --capabilities CAPABILITY_IAM --region $npm_config_region --no-fail-on-empty-changeset --resolve-s3"
