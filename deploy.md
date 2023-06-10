@@ -82,3 +82,5 @@ npm run start:sam
 1. Replace the `<<the region>>` with the region you want to deploy to. (e.g. `us-east-1`, `us-west-2`, `eu-central-1` etc.)
 2. Replace the `<<the function name>>` with the name you want to give the function. (e.g. `proxy-server`)
 3. Copy the URL at then end of the output and paste it in your browser to see the website you are proxying.
+
+**NOTE**: As at the time of writing, the AWS API Gateway do not support Chunnked Transfer *Encoding*. 
